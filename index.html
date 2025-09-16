@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>🌌 AR Solar System (Pro)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Security CSP -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' https://unpkg.com;
+             style-src 'self' 'unsafe-inline'; img-src 'self' data: https://cdn.jsdelivr.net;
+             connect-src 'self' https://cdn.jsdelivr.net;">
+
+  <!-- model-viewer -->
+  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+  <style>
+    body {
+      margin:0; background:#0a0a0a; color:#eee;
+      font-family: system-ui,sans-serif;
+      display:flex; flex-direction:column; align-items:center;
+      padding:20px;
+    }
+    h1 { font-size:1.6rem; margin:12px 0; color:#0ff; text-shadow:0 0 6px #08f; }
+    .input-box { display:flex; gap:8px; margin:16px 0; }
+    input {
+      padding:10px; font-size:1rem; border-radius:8px; border:none; outline:none;
+      width:220px;
+    }
+    button {
+      padding:10px 16px; font-size:1rem;
+      border:none; border-radius:8px;
+      background:linear-gradient(90deg,#08f,#0ff); color:#000; font-weight:600;
+      cursor:pointer; transition:0.2s;
+    }
+    button:hover { transform:scale(1.05); }
+    model-viewer {
+      width:100%; max-width:480px; height:420px;
+      background:#000; border-radius:12px;
+      box-shadow:0 0 20px rgba(0,255,255,0.3);
+    }
+    footer { font-size:.8rem; margin-top:20px; opacity:.7; }
+  </style>
+</head>
+<body>
+  <h1>🌍 AR Solar System Viewer</h1>
+
+  <div class="input-box">
+    <input id="objectInput" type="text" placeholder="Type: Sun, Earth, Mars...">
+    <button onclick="loadModel()">Load in AR</button>
+  </div>
+
+  <!-- AR viewer -->
+  <model-viewer id="viewer"
+    ar
+    ar-modes="webxr scene-viewer quick-look"
+    camera-controls
+    autoplay
+    shadow-intensity="1"
+    exposure="1.2">
+  </model-viewer>
+
+  <footer>
+    ✨ Supported: Sun, Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, Uranus, Neptune
+  </footer>
+
+  <script>
+    // Mapping planets/objects → GLB URLs
+    const models = {
+      "sun": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/sun/scene.glb",
+      "mercury": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/mercury/scene.glb",
+      "venus": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/venus/scene.glb",
+      "earth": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/earth/scene.glb",
+      "moon": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/moon/scene.glb",
+      "mars": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/mars/scene.glb",
+      "jupiter": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/jupiter/scene.glb",
+      "saturn": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/saturn/scene.glb",
+      "uranus": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/uranus/scene.glb",
+      "neptune": "https://cdn.jsdelivr.net/gh/pmndrs/gltf-resources@master/planets/neptune/scene.glb"
+    };
+
+    function loadModel() {
+      const input = document.getElementById("objectInput").value.trim().toLowerCase();
+      const viewer = document.getElementById("viewer");
+      if (models[input]) {
+        viewer.src = models[input];
+      } else {
+        alert("❌ Model not found. Try: Sun, Mercury, Venus, Earth, Moon, Mars, Jupiter, Saturn, Uranus, Neptune");
+      }
+    }
+  </script>
+</body>
+</html>
